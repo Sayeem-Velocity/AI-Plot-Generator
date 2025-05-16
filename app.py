@@ -40,7 +40,7 @@ if uploaded_file:
         if st.button("Generate Plot"):
             buf = generate_plot(df, x_col, y_col, chart_type, output_format)
 
-            st.image(buf, caption="Generated Plot", use_column_width=True)
+            st.image(buf, caption="Generated Plot", use_container_width=True)
 
             st.download_button(
                 label="📥 Download Plot",
