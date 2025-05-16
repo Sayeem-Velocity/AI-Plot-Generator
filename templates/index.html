@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Plot Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>📊 AI Plot Generator</h1>
+    <div class="chat-box">
+      <div class="upload-section">
+        <label for="file-upload">Upload CSV/XLSX/XLS:</label>
+        <input type="file" id="file-upload" accept=".csv,.xlsx,.xls">
+        <button onclick="uploadFile()">Upload</button>
+      </div>
+      <div class="controls" id="controls" style="display:none;">
+        <label>X-Axis:
+          <select id="x-col"></select>
+        </label>
+        <label>Y-Axis:
+          <select id="y-col"></select>
+        </label>
+        <label>Chart Type:
+          <select id="chart-type">
+            <option>Bar Chart</option>
+            <option>Line Chart</option>
+            <option>Pie Chart</option>
+            <option>Scatter Plot</option>
+            <option>Histogram</option>
+          </select>
+        </label>
+        <label>Download Format:
+          <select id="format">
+            <option>png</option>
+            <option>jpg</option>
+            <option>jpeg</option>
+          </select>
+        </label>
+        <button onclick="generatePlot()">Generate Plot</button>
+      </div>
+      <div id="output-section">
+        <img id="plot-img" style="display:none; max-width:100%; margin-top: 20px;" />
+        <a id="download-link" download="plot.png" style="display:none;">Download Plot</a>
+      </div>
+    </div>
+  </div>
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
