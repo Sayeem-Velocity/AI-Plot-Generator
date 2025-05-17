@@ -1,39 +1,46 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly.express as px
 from PIL import Image
 import io
 
-
-def generate_plot(data, x_col, y_col, chart_type, output_format='png'):
+def generate_plot(data, x_cols, y_cols, chart_type, color='blue', title='', xlabel='', ylabel='', legend=True):
     buf = io.BytesIO()
     plt.figure(figsize=(10, 6))
 
     if chart_type == 'Line Chart':
-        sns.lineplot(data=data, x=x_col, y=y_col)
+        for y in y_cols:
+            sns.lineplot(data=data, x=x_cols[0], y=y, label=y if legend else "_nolegend_", color=color)
     elif chart_type == 'Bar Chart':
-        sns.barplot(data=data, x=x_col, y=y_col)
+        for y in y_cols:
+            sns.barplot(data=data, x=x_cols[0], y=y, label=y if legend else "_nolegend_", color=color)
     elif chart_type == 'Scatter Plot':
-        sns.scatterplot(data=data, x=x_col, y=y_col)
+        for y in y_cols:
+            sns.scatterplot(data=data, x=x_cols[0], y=y, label=y if legend else "_nolegend_", color=color)
     elif chart_type == 'Histogram':
-        sns.histplot(data[y_col], kde=True)
+        for y in y_cols:
+            sns.histplot(data[y], kde=True, color=color, label=y if legend else "_nolegend_")
     elif chart_type == 'Pie Chart':
-        # Pie chart must use value counts
-        pie_data = data[y_col].value_counts()
+        pie_data = data[y_cols[0]].value_counts()
         plt.pie(pie_data, labels=pie_data.index, autopct='%1.1f%%')
         plt.ylabel('')
     else:
         raise ValueError("Unsupported chart type")
 
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+
+    if legend and chart_type != 'Pie Chart':
+        plt.legend()
+
     plt.tight_layout()
-    plt.savefig(buf, format=output_format)
+    plt.savefig(buf, format='png')
     buf.seek(0)
 
-    if output_format in ['jpg', 'jpeg']:
-        img = Image.open(buf).convert("RGB")
-        buf = io.BytesIO()
-        img.save(buf, format=output_format.upper())
-        buf.seek(0)
+    img = Image.open(buf).convert("RGB")
+    buf = io.BytesIO()
+    img.save(buf, format='PNG')
+    buf.seek(0)
 
     return buf
